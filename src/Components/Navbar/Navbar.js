@@ -56,7 +56,9 @@ const Navbar = () => {
           Videos
         </NavLink>
         {currentUser?.email ? (
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} className='logout-button'>
+            Logout
+          </button>
         ) : (
           <NavLink
             className={({ isActive }) => (isActive ? "active-link" : "link")}

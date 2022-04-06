@@ -15,6 +15,19 @@ nav {
   margin-top: 10px;
 }
 
+.logout-button {
+  border: none;
+  margin-left: 15px;
+  font-size: 24px;
+  font-family: "Teko", sans-serif;
+  background-color: transparent;
+  color: #1e90c2;
+}
+
+.logout-button:hover {
+  color: #1b4388;
+}
+
 .link {
   text-decoration: none;
   margin-left: 15px;
