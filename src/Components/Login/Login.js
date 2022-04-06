@@ -21,6 +21,7 @@ const Login = () => {
         const user = result.user;
         // ...
         console.log(user);
+        navigate("/");
       })
       .catch((error) => {
         // Handle Errors here.

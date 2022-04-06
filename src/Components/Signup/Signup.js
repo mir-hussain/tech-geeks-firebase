@@ -28,6 +28,7 @@ const Signup = () => {
         const user = result.user;
         // ...
         console.log(user);
+        navigate("/");
       })
       .catch((error) => {
         // Handle Errors here.
@@ -82,14 +83,19 @@ const Signup = () => {
       });
     }
     if (email.value && password.value === passwordConfirmation.value) {
-      createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(auth, email.value, password.value)
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user);
+          toast.success("Account created", { id: "created" });
+          navigate("/");
         })
         .catch((error) => {
           const errorMessage = error.message;
-          console.log(errorMessage);
+          if (errorMessage.includes("already-in-use")) {
+            toast.error("Email already in use", { id: "error" });
+          } else {
+            toast.error(errorMessage, { id: "error" });
+          }
         });
     }
   };
