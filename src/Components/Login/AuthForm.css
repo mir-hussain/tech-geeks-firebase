@@ -36,7 +36,6 @@
 }
 
 .input-wrapper {
-  background: red;
   padding: 2px;
   border-radius: 7px;
   background: #1b4388;
@@ -134,4 +133,10 @@
 .line-right {
   background: #1b4388;
   background: linear-gradient(90deg, #1e90c2 0%, #1b4388 100%);
+}
+
+.error {
+  margin-top: 10px;
+  color: red;
+  font-size: 15px;
 }

@@ -8,13 +8,18 @@ import {
 } from "firebase/auth";
 import { auth } from "../../Firebase/Firebase.init";
 import toast from "react-hot-toast";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 const provider = new GoogleAuthProvider();
 
 const Signup = () => {
-  //   const [email, setEmail] = useState("");
-  //   const [password, setPassword] = useState("");
-  //   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
+  const [passwordConfirmation, setPasswordConfirmation] = useState({
+    value: "",
+    error: "",
+  });
+
   const navigate = useNavigate();
 
   const googleAuth = () => {
@@ -30,27 +35,42 @@ const Signup = () => {
       });
   };
 
-  //   const handleEmail = (event) => {
-  //     const email = event.target.value;
-  //     setEmail(email);
-  //   };
-  //   const handlePassword = (event) => {
-  //     const password = event.target.value;
+  const handleEmail = (event) => {
+    const emailInput = event.target.value;
+    if (/\S+@\S+\.\S+/.test(emailInput)) {
+      setEmail({ value: emailInput, error: "" });
+    } else {
+      setEmail({ value: "", error: "Please Provide a valid Email" });
+    }
+  };
+  const handlePassword = (event) => {
+    const passwordInput = event.target.value;
 
-  //     setPassword(password);
-  //   };
-  //   const handleConfirmPassword = (event) => {
-  //     setPasswordConfirmation(event.target.value);
-  //   };
+    if (passwordInput.length < 7) {
+      setPassword({ value: "", error: "Password too short" });
+    } else if (!/(?=.*[A-Z])/.test(passwordInput)) {
+      setPassword({
+        value: "",
+        error: "Password must contain a capital letter",
+      });
+    } else {
+      setPassword({ value: passwordInput, error: "" });
+    }
+  };
+  const handleConfirmPassword = (event) => {
+    const confirmationInput = event.target.value;
+
+    if (confirmationInput !== password.value) {
+      setPasswordConfirmation({ value: "", error: "Password Mismatched" });
+    } else {
+      setPasswordConfirmation({ value: confirmationInput, error: "" });
+    }
+  };
 
   const handleSignup = (event) => {
     event.preventDefault();
-
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    const confirmPassword = event.target.confirmPassword.value;
-
-    if (password === confirmPassword) {
+    console.log("Clicked");
+    if (email.value && password.value === passwordConfirmation.value) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
@@ -60,8 +80,6 @@ const Signup = () => {
           const errorMessage = error.message;
           console.log(errorMessage);
         });
-    } else {
-      toast.error("Password Mismatched", { id: "error" });
     }
   };
 
@@ -74,34 +92,49 @@ const Signup = () => {
             <label htmlFor='email'>Email</label>
             <div className='input-wrapper'>
               <input
-                // onBlur={handleEmail}
+                onBlur={handleEmail}
                 type='email'
                 name='email'
                 id='email'
               />
             </div>
+            {email.error && (
+              <p className='error'>
+                <AiOutlineExclamationCircle /> {email.error}
+              </p>
+            )}
           </div>
           <div className='input-field'>
             <label htmlFor='password'>Password</label>
             <div className='input-wrapper'>
               <input
-                // onBlur={handlePassword}
+                onBlur={handlePassword}
                 type='password'
                 name='password'
                 id='password'
               />
             </div>
+            {password.error && (
+              <p className='error'>
+                <AiOutlineExclamationCircle /> {password.error}
+              </p>
+            )}
           </div>
           <div className='input-field'>
             <label htmlFor='confirm-password'>Confirm Password</label>
             <div className='input-wrapper'>
               <input
-                // onBlur={handleConfirmPassword}
+                onBlur={handleConfirmPassword}
                 type='password'
                 name='confirmPassword'
                 id='confirm-password'
               />
             </div>
+            {passwordConfirmation.error && (
+              <p className='error'>
+                <AiOutlineExclamationCircle /> {passwordConfirmation.error}
+              </p>
+            )}
           </div>
           <button type='submit' className='auth-form-submit'>
             Sign Up
