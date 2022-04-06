@@ -2,7 +2,11 @@ import React from "react";
 import "./AuthForm.css";
 import GoogleLogo from "../../Assets/Image/google.svg";
 import { useNavigate } from "react-router-dom";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../../Firebase/Firebase.init";
 
 const provider = new GoogleAuthProvider();
@@ -23,27 +27,45 @@ const Login = () => {
       });
   };
 
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.email.value;
+
+    if (email && password) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          navigate("/");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    }
+  };
+
   return (
     <div className='auth-form-container '>
       <div className='auth-form'>
         <h1>Login</h1>
-        <div>
+        <form onSubmit={handleLogin}>
           <div className='input-field'>
             <label htmlFor='email'>Email</label>
             <div className='input-wrapper'>
-              <input type='email' name='email' id='email' />
+              <input type='email' name='email' id='email' required />
             </div>
           </div>
           <div className='input-field'>
             <label htmlFor='password'>Password</label>
             <div className='input-wrapper'>
-              <input type='password' name='password' id='password' />
+              <input type='password' name='password' id='password' required />
             </div>
           </div>
           <button type='submit' className='auth-form-submit'>
             Login
           </button>
-        </div>
+        </form>
         <p className='redirect'>
           New to Tech Geeks?{" "}
           <span onClick={() => navigate("/signup")}>Create New Account</span>
