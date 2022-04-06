@@ -69,7 +69,18 @@ const Signup = () => {
 
   const handleSignup = (event) => {
     event.preventDefault();
-    console.log("Clicked");
+    if (email.value === "") {
+      setEmail({ value: "", error: "Email is required" });
+    }
+    if (password.value === "") {
+      setPassword({ value: "", error: "Password is required" });
+    }
+    if (passwordConfirmation.value === "") {
+      setPasswordConfirmation({
+        value: "",
+        error: "Password confirmation is required",
+      });
+    }
     if (email.value && password.value === passwordConfirmation.value) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
