@@ -1,15 +1,14 @@
 import React from "react";
-import "./AuthForm.css";
-import GoogleLogo from "../../Assets/Image/google.svg";
 import { useNavigate } from "react-router-dom";
+import GoogleLogo from "../../Assets/Image/google.svg";
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
 
   return (
     <div className='auth-form-container '>
       <div className='auth-form'>
-        <h1>Login</h1>
+        <h1>Sign Up</h1>
         <div>
           <div className='input-field'>
             <label htmlFor='email'>Email</label>
@@ -23,13 +22,23 @@ const Login = () => {
               <input type='password' name='password' id='password' />
             </div>
           </div>
+          <div className='input-field'>
+            <label htmlFor='confirm-password'>Confirm Password</label>
+            <div className='input-wrapper'>
+              <input
+                type='password'
+                name='confirmPassword'
+                id='confirm-password'
+              />
+            </div>
+          </div>
           <button type='submit' className='auth-form-submit'>
-            Login
+            Sign Up
           </button>
         </div>
         <p className='redirect'>
-          New to Tech Geeks?{" "}
-          <span onClick={() => navigate("/signup")}>Create New Account</span>
+          Already have an account?{" "}
+          <span onClick={() => navigate("/login")}>Login</span>
         </p>
         <div className='horizontal-divider'>
           <div className='line-left' />
@@ -47,4 +56,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

@@ -18,7 +18,7 @@
 }
 
 .auth-form h1 {
-  margin: 25px 0;
+  margin: 40px 0;
   color: #1b4388;
 }
 
@@ -100,11 +100,13 @@
 
 .redirect {
   margin-top: 10px;
+  color: #1b4388;
 }
 
 .redirect span {
   text-decoration: underline;
   cursor: pointer;
+  color: #1e90c2;
 }
 
 .horizontal-divider {
@@ -125,11 +127,11 @@
 }
 
 .line-left {
-  background: rgb(27, 67, 136);
+  background: #1b4388;
   background: linear-gradient(90deg, #1b4388 0%, #1e90c2 100%);
 }
 
 .line-right {
-  background: rgb(27, 67, 136);
+  background: #1b4388;
   background: linear-gradient(90deg, #1e90c2 0%, #1b4388 100%);
 }
