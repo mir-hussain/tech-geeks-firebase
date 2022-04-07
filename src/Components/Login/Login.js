@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./AuthForm.css";
 import GoogleLogo from "../../Assets/Image/google.svg";
 import { useNavigate } from "react-router-dom";
@@ -9,11 +9,14 @@ import {
 } from "firebase/auth";
 import { auth } from "../../Firebase/Firebase.init";
 import toast from "react-hot-toast";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 const provider = new GoogleAuthProvider();
 
 const Login = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
 
   const googleAuth = () => {
     signInWithPopup(auth, provider)
@@ -29,15 +32,35 @@ const Login = () => {
       });
   };
 
+  const handleEmail = (event) => {
+    const emailInput = event.target.value;
+
+    if (/\S+@\S+\.\S+/.test(emailInput)) {
+      setEmail({ value: emailInput, error: "" });
+    } else {
+      setEmail({ value: "", error: "Please Provide a valid Email" });
+    }
+  };
+
+  const handlePassword = (event) => {
+    const passwordInput = event.target.value;
+
+    setPassword({ value: passwordInput, error: "" });
+  };
+
   const handleLogin = (event) => {
     event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    console.log(email);
-    console.log(password);
 
-    if (email && password) {
-      signInWithEmailAndPassword(auth, email, password)
+    if (email.value === "") {
+      setEmail({ value: "", error: "Email is required" });
+    }
+
+    if (password.value === "") {
+      setPassword({ value: "", error: "Password is required" });
+    }
+
+    if (email.value && password.value) {
+      signInWithEmailAndPassword(auth, email.value, password.value)
         .then((userCredential) => {
           const user = userCredential.user;
           console.log(user);
@@ -45,7 +68,12 @@ const Login = () => {
         })
         .catch((error) => {
           const errorMessage = error.message;
-          toast.error(errorMessage, { id: "error" });
+
+          if (errorMessage.includes("wrong-password")) {
+            toast.error("Wrong Password", { id: "error" });
+          } else {
+            toast.error(errorMessage, { id: "error" });
+          }
         });
     }
   };
@@ -58,14 +86,29 @@ const Login = () => {
           <div className='input-field'>
             <label htmlFor='email'>Email</label>
             <div className='input-wrapper'>
-              <input type='email' name='email' id='email' required />
+              <input type='text' name='email' onBlur={handleEmail} id='email' />
             </div>
+            {email.error && (
+              <p className='error'>
+                <AiOutlineExclamationCircle /> {email.error}
+              </p>
+            )}
           </div>
           <div className='input-field'>
             <label htmlFor='password'>Password</label>
             <div className='input-wrapper'>
-              <input type='password' name='password' id='password' required />
+              <input
+                type='password'
+                onBlur={handlePassword}
+                name='password'
+                id='password'
+              />
             </div>
+            {password.error && (
+              <p className='error'>
+                <AiOutlineExclamationCircle /> {password.error}
+              </p>
+            )}
           </div>
           <button type='submit' className='auth-form-submit'>
             Login
